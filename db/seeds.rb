@@ -7,9 +7,16 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-Video.create(title:"Batman v Superman", description:"Mighty Heros fighting", small_cover_url:"/tmp/batmanvsuperman.jpg" )
-Video.create(title:"Starwars: Force Awakens", description:"BEST MOVIE EVERRRRRR", small_cover_url:"/tmp/starwars.jpg" )
-Video.create(title:"Captain America: Civil War", description:"Mighty Heros fighting", small_cover_url:"/tmp/civilwar.jpg" )
-Video.create(title:"Wonder Woman", description:"Mighty Hero", small_cover_url:"/tmp/wonderwoman.jpg" )
-Video.create(title:"TMNT", description:"Turtles Power", small_cover_url:"/tmp/tmnt.jpg")
+Video.create(title:"Batman v Superman", description:"Mighty Heros fighting", small_cover_url:"/tmp/batmanvsuperman.jpg", large_cover_url:"/tmp/monk_large.jpg", category_id: 1 )
+Video.create(title:"Starwars: Force Awakens", description:"BEST MOVIE EVERRRRRR", small_cover_url:"/tmp/futurama.jpg", large_cover_url:"/tmp/monk_large.jpg", category_id: 2 )
+Video.create(title:"Captain America: Civil War", description:"Mighty Heros fighting", small_cover_url:"/tmp/south_park.jpg", large_cover_url:"/tmp/monk_large.jpg", category_id: 3 )
+Video.create(title:"Wonder Woman", description:"Mighty Hero", small_cover_url:"/tmp/wonderwoman.jpg", large_cover_url:"/tmp/monk_large.jpg", category_id: 4 )
+Video.create(title:"TMNT", description:"Turtles Power", small_cover_url:"/tmp/monk.jpg", large_cover_url:"/tmp/monk_large.jpg", category_id: 5)
 
+
+
+Category.create(category:"Action")
+Category.create(category:"Drama")
+Category.create(category:"Comic Book")
+Category.create(category:"Thriller")
+Category.create(category:"Horror")

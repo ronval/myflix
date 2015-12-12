@@ -1,9 +1,24 @@
 %article.video_category
+  
+  
+  -@categories.each do |category|
+    %header
+      %h1= link_to category.category
+    .videos.row 
+      .video.col-sm-2
+      -category.videos.each do |cat|
+        / =cat.title
+        = link_to video_path(cat), nil do
+          %img(src="#{cat.small_cover_url}")
+
+
+%article.video_category
   %header
     %h3= link_to "TV Commedies"
   .videos.row
-    - @videos.each do |video|
+    - 6.times do
       .video.col-sm-2
-        = link_to video, nil do
-          %img(src="#{video.small_cover_url}")
-          /here we have to add the actual attribute that we will be using
+        = link_to "", nil do
+          %img(src="/tmp/#{['futurama', 'south_park', 'family_guy'].sample}.jpg")
+
+

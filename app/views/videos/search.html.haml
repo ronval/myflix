@@ -1,0 +1,14 @@
+%h1 this is the search page
+
+%article.video_category
+  
+  
+  -@videos.each do |movie|
+    %header
+     
+      /%h1= link_to category.category
+    .videos.row 
+      .video.col-sm-2
+        = link_to video_path(movie), nil do
+          %img(src="#{movie.small_cover_url}")
+

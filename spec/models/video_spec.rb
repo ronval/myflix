@@ -9,7 +9,6 @@ describe Video do
 
   
   describe (".search_by_title") do
-    
     it "returns an empty array if there is no result from the query" do
       vid = Video.create(title:"Superman", description:"cool movie")
       expect(Video.search_by_title("batman")).to be_empty
@@ -20,12 +19,20 @@ describe Video do
       vid = Video.create(title:"Superman", description:"cool movie")
       expect(Video.search_by_title("Superman")).to eq([vid])
     end 
-    
     it "returns an array of one video for a partial match" do 
       vid = Video.create(title:"Superman", description:"cool movie")
       expect(Video.search_by_title("Super")).to eq([vid])
     end 
-    
+    it "returns an array of all matches ordered by create_at" do 
+      vid = Video.create(title:"Superman", description:"cool movie", created_at: 1.day.ago)
+       vid2 = Video.create(title:"Super", description:"cool movie")
+      expect(Video.search_by_title("Sup")).to eq([vid2, vid])
+    end
+
+    it "returns an empty array if the search query is an empty string" do 
+      vid2 = Video.create(title:"Super", description:"cool movie")
+      expect(Video.search_by_title("")).to eq([])
+    end  
   end 
     
 

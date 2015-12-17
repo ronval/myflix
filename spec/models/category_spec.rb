@@ -3,7 +3,11 @@ require 'rails_helper'
 
 describe Category do 
   it{ should have_many(:videos)}  
-  # it "saves itself" do 
+ 
+end 
+
+
+ # it "saves itself" do 
   #   category = Category.new(category:"Romance")
   #   category.save
   #   expect(Category.last.category).to eql("Romance")
@@ -37,5 +41,3 @@ describe Category do
       
 
   #   end  
-
-end 

@@ -1,4 +1,13 @@
 class VideosController < ApplicationController
+  before_action :require_user, only:[:index]
+  
+  def home
+    if logged_in?
+      redirect_to home_path 
+    end 
+  end
+
+
   def index
     @categories = Category.all
   end

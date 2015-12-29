@@ -1,0 +1,12 @@
+<div class ='well'>
+  <div class = 'control-group'> 
+    <%= form_tag '/loggedin' do %>
+      <%= label_tag :email %>
+      <%= text_field_tag :email %>
+      <br/>
+      <%= label_tag :password %>
+      <%= password_field_tag :password %>
+      <br/>
+      <%= submit_tag "login", class: 'btn btn-primary' %>
+    <%end%>
+  </div></div>

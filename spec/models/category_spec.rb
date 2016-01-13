@@ -3,6 +3,8 @@ require 'rails_helper'
 
 describe Category do 
   it{ should have_many(:videos)}  
+  it {should validate_presence_of(:category)}
+
 
   describe "#recent_videos" do 
     it "returns an empty array if there are no movies in the category" do 

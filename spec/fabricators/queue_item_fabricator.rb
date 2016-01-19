@@ -1,6 +1,3 @@
 Fabricator(:queue_item) do 
-  
-   video { Fabricate(:video) }
-  user { Fabricate(:user) }
-  position { [1..5].sample }
+  position {[1,2,3].sample}
 end 

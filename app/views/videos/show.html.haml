@@ -1,4 +1,4 @@
-HI
+
 %article.video
   .container
     .row
@@ -20,7 +20,7 @@ HI
       = form_for [@videos, Review.new] do |f|
         %fieldset
           %label Rate this video
-          = f.select :score, options_for_select([5,4,3,2,1].map {|number| [pluralize(number, "star")]})
+          = f.select :score, options_for_video_reviews
           %label Write Review
           = f.text_area :review_content, rows: 6, class: "span6"
           %fieldset.actions.clearfix

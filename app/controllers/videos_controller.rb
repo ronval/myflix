@@ -1,5 +1,5 @@
 class VideosController < ApplicationController
-  before_action :require_user
+  before_action :require_user, only:[:index, :show, :search]
   
   def home
     if logged_in?

@@ -13,7 +13,7 @@ describe QueueItem do
     end 
    end
 
-  describe "#rating" do 
+  describe "#score" do 
     it "returns the rating from the review when the review is present" do 
       video = Fabricate(:video)
       user  = Fabricate(:user)
@@ -29,6 +29,36 @@ describe QueueItem do
       expect(queue_item.score).to eq(nil)
     end 
   end  
+
+  describe "score= " do 
+    it "changes the rating of the review if the review is present" do 
+      video = Fabricate(:video)
+      user = Fabricate(:user)
+      review = Fabricate(:review, user:user, video:video, score:2)
+      queue_item = Fabricate(:queue_item, user:user, video:video)
+      queue_item.score =  4
+      expect(Review.first.score).to eq(4)
+
+    end 
+    it "clears the rating of the review if the review is present" do 
+      video = Fabricate(:video)
+      user = Fabricate(:user)
+      review = Fabricate(:review, user:user, video:video, score:2)
+      queue_item = Fabricate(:queue_item, user:user, video:video)
+      queue_item.score = nil
+      expect(Review.first.score).to be_nil
+    end 
+    it "creates a review with the rating if the review is not presene" do 
+      video = Fabricate(:video)
+      user = Fabricate(:user)
+      
+      queue_item = Fabricate(:queue_item, user:user, video:video)
+      queue_item.score = 3
+      expect(Review.first.score).to eq(3)
+
+    end 
+
+  end 
 
   describe "#category_name" do 
     it "returns the category's name of the video " do 

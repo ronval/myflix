@@ -31,6 +31,11 @@ group :test do
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.0'
   gem 'shoulda-matchers', '~> 3.0'
+  
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'rack_session_access'
+  gem 'launchy'
 end
 
 group :production do

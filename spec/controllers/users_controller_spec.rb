@@ -40,6 +40,24 @@ describe UsersController do
     end 
   end 
 
+
+  describe "GET show" do 
+    context "signed in user" do 
+      it "sets the @user variable to the user being picked" do 
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        get :show, id: user.id
+        expect(assigns(:user)).to eq(user)
+      end 
+
+    end 
+    context "not signed in user" do 
+      it "redirects to the sign in page when they arent signed in"
+      it "set the flash with a notice for the redirect"
+    end 
+
+  end
+
 end 
 
 

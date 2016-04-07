@@ -21,6 +21,7 @@ group :development do
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.0'
+  gem 'letter_opener'
 end
 
 
@@ -36,6 +37,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'rack_session_access'
   gem 'launchy'
+  gem 'capybara-email'
 end
 
 group :production do

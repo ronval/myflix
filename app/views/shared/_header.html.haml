@@ -6,6 +6,7 @@
       %li= link_to "Videos"
       %li= link_to "My Queue"
       %li= link_to "People", people_path
+      %li= link_to "My profile", user_path(current_user.id)
   -if logged_in?
     %form.col-md-5.navbar-form(action="/videos/search")
       .form-group

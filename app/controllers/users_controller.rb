@@ -7,7 +7,7 @@ class  UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    
+    @invitation = Invitation.new(token:"") 
     
     if @user.save
       if params[:invitation_token]  && params[:invitation_token] != ""

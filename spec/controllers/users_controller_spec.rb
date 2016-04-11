@@ -7,6 +7,8 @@ describe UsersController do
       get :new
       expect(assigns(:user)).to be_instance_of(User)
     end 
+
+
   end 
 
 
@@ -46,9 +48,14 @@ describe UsersController do
             expect(Invitation.first.token).to be_nil
           end 
 
-
-
+          it "sets the @invitation variable invitation instance" do 
+            alice = Fabricate(:user)
+            post :create, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:''
+            expect(assigns(:invitation)).to be_instance_of Invitation
+          end 
       end 
+       
+
        context "without valid input" do  
             it "didnt create a user" do 
               post :create, user: {email:"martin@gmail.com"}

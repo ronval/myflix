@@ -1,6 +1,6 @@
 class User <ActiveRecord::Base
   
-  before_create :generate_token
+  include Tokenable
 
 
   has_many :reviews, -> {order "created_at DESC"}
@@ -33,21 +33,19 @@ has_many :leading_relationships, class_name:"Relationship", foreign_key: :leader
     queue_items.map(&:video).include?(video)
      
   end
-
-  def follows?(another_user)
-    following_relationships.map(&:leader).include?(another_user)
-  end
-
+  
   def follow(another_user)
     following_relationships.create(leader:another_user) if can_follow?(another_user)
   end
-
+  
+  def follows?(another_user)
+    following_relationships.map(&:leader).include?(another_user)
+  end
+  
   def can_follow?(another_user)
     !(self.follows?(another_user) || self == another_user)
   end
 
-  def generate_token
-    self.token = SecureRandom.urlsafe_base64
-  end
+  
 
 end 

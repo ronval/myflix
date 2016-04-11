@@ -1,24 +1,5 @@
 class  UsersController < ApplicationController
   
-  # def new_session
-  #   @user = User.new
-  # end
-
-  # def create_session
-  #   @user = User.find(params[:id])
-
-  #   if @user.exists && @user.authenticate
-  #     session[:user_id] = @user.id
-  #     flash[:notice] = "You are Signed in"
-  #     redirect_to home_path
-  #   else 
-  #     flash[:notice] = "Something went wrong"
-  #     render :new_session
-  #   end 
-  #   # if user is real and the password is good 
-  #   #   session should be created to be set to the id of the person 
-  # end
-
   def new 
     @user = User.new 
     @invitation = Invitation.new(token:"") 
@@ -37,7 +18,8 @@ class  UsersController < ApplicationController
         invitation.update_column(:token,nil)
       end 
       flash[:notice] = "Thank you for signing up "
-      AppMailer.send_welcome_email(@user).deliver
+      EmailWorker.perform_async(@user.id)
+      #AppMailer.send_welcome_email(@user).deliver
       redirect_to signin_path
     else
       render :new

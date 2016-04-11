@@ -97,13 +97,6 @@ describe UsersController do
 
 
 
-
-
-
-
-
-
-
   describe "GET show" do 
     context "signed in user" do 
       it "sets the @user variable to the user being picked" do 
@@ -146,17 +139,8 @@ describe UsersController do
       invitation = Fabricate(:invitation)
       get :new_with_invitation_token, token: invitation.token
       expect(assigns(:invitation_token)).to eq(invitation.token) 
-
-
     end 
-
-
-
   end 
-
-
-
-
 
 end 
 

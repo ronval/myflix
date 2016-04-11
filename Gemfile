@@ -17,6 +17,7 @@ gem 'sidekiq'
 gem 'sinatra', require:false
 gem 'slim'
 
+
 group :development do
   gem 'thin'
   gem "better_errors"
@@ -45,5 +46,6 @@ end
 
 group :production do
   gem 'rails_12factor'
+  gem 'unicorn'
 end
 

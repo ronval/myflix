@@ -1,3 +1,4 @@
+#####THIS IS A TEST OF THE GIT HUB CONTIBUTIONS SETTINGS
 class  UsersController < ApplicationController
   
   def new 

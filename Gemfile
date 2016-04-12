@@ -16,7 +16,7 @@ gem 'faker'
 gem 'sidekiq'
 gem 'sinatra', require:false
 gem 'slim'
-
+gem "sentry-raven"
 
 group :development do
   gem 'thin'

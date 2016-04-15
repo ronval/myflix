@@ -17,6 +17,9 @@ gem 'sidekiq'
 gem 'sinatra', require:false
 gem 'slim'
 gem "sentry-raven"
+gem 'carrierwave'
+
+gem 'mini_magick'
 
 group :development do
   gem 'thin'
@@ -26,6 +29,7 @@ group :development do
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.0'
   gem 'letter_opener'
+  gem 'carrierwave-aws'
 end
 
 
@@ -47,5 +51,6 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'unicorn'
+  gem 'carrierwave-aws'
 end
 

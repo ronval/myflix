@@ -8,7 +8,7 @@ class Admin::VideosController <ApplicationController
 
   def create
     @video = Video.new(video_params)
-    binding.pry
+    
     if @video.valid?
       @video.save
       redirect_to new_admin_video_path

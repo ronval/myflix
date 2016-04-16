@@ -12,8 +12,8 @@
         %p 
           = @videos.description
         .actions
-          %a.btn.btn-primary(href="") Watch Now
           
+          %a.btn.btn-primary{:target => "_blank", :href => @videos.video_url} Watch Now
           = link_to "+ My Queue", queue_items_path(video_id:@videos.id), method: :post, class: "btn btn-primary" unless current_user.queued_video?(@videos)
 %section.reviews.container
   .row

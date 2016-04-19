@@ -16,14 +16,14 @@ require "rails_helper"
       
       click_button "Add Video"
       
-      sign_out
-      sign_in
-      save_and_open_page
-      binding.pry
-      visit video_path(Video.first.id)
       
-      expect(page).to have_selector("img[src='/uploads/monk_large.jpg']")
-      #click_link("Conan")
+      
+      
+      visit home_path
+      
+      expect(page).to have_selector("img[src='/uploads/monk.jpg']")
+      
+      find("a[data-movie='Conan']").click
       expect(page).to have_selector("a[href='http://www.example.com/my_video.mp4']")
     end 
 

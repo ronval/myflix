@@ -8,8 +8,8 @@
       .video.col-sm-2
       -category.recent_videos.each do |cat|
         
-        = link_to video_path(cat), nil do
-          %img{:src=>"#{cat.small_cover}", data:"#{cat.title}"}
+        = link_to video_path(cat), :data=>{:movie =>"#{cat.title}"} do
+          %img{:src=>"#{cat.small_cover}"}
 
 
 %article.video_category

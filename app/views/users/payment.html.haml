@@ -1,0 +1,79 @@
+/ = content_for :head do 
+/   %script(type="text/javascript" src="https://js.stripe.com/v2/")
+/   :javascript
+/     Stripe.setPublishableKey('pk_test_kKSCJ0oliWfyVjVRtBiK9YyY');
+    
+/ = form_tag payment_path, id:'payment-form' do 
+/   %fieldset.credit_card
+/     %span.payment-errors
+/     %label Credit Card Number
+/     %input.span3.card-number(type="text")
+/     %label Security Code
+/     %input.span3.card-cvc(type="text")
+/     %label Expiration
+/     = select_month(Date.today,{add_month_numbers:true}, name:nil, class:"span2 card-expiry-month")
+/     =select_year(Date.today.year, {start_year: Date.today.year, end_year:Date.today.year+ 4}, name:nil, class:'span1 card-expiry-year')
+/     %feildset.actions
+/       =submit_tag "Submit Payment", class"btn payment_submit"
+
+
+
+
+
+/ jQuery(function($){
+/   $("#payment-form").submit(function(event){
+/     var $form =$(this);
+/     $form.find('.payment_submit').prop('disabled', true);
+/     Stripe.createToken({
+/       number:$('.card-number').val(),
+/       cvc:$('.card-cvc').val(),
+/       exp_month:$('.card-expiry-month').val(),
+/       exp_year:$('.card-expiry-year').val()
+/     }, stripeResponseHandler);
+/     return false;
+/   });
+/   var stripeResponseHandler = function(status,response) {
+/     var $form = $('#payment-form');
+
+/     if (response.error) {
+/     $form.find('.payment-errors').text(response.error.message);
+/     $form.find('.payment_submit').prop('disabled', false);
+/     } else {
+/       var token = response.id;
+/       $form.append($('<input type="hidden" name="stripeToken' />).val(token));
+/       $form.get(0).submit();
+/     }
+
+/   };
+/ });
+
+
+
+
+
+/ jQuery(function($){
+/   $("#payment-form").submit(function(event){
+/     var $form =$(this);
+/     $form.find('.payment_submit').prop('disabled', true);
+/     Stripe.createToken({
+/       number:$('.card-number').val(),
+/       cvc:$('.card-cvc').val(),
+/       exp_month:$('.card-expiry-month').val(),
+/       exp_year:$('.card-expiry-year').val()
+/     }, stripeResponseHandler);
+/     return false;
+/   });
+/   var stripeResponseHandler = function(status,response) {
+/     var $form = $('#payment-form');
+
+/     if (response.error) {
+/     $form.find('.payment-errors').text(response.error.message);
+/     $form.find('.payment_submit').prop('disabled', false);
+/     } else {
+/       var token = response.id;
+/       $form.append($('<input type="hidden" name="stripeToken' />).val(token));
+/       $form.get(0).submit();
+/     }
+
+/   };
+/ });

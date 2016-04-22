@@ -1,4 +1,5 @@
 #####THIS IS A TEST OF THE GIT HUB CONTIBUTIONS SETTINGS
+ 
 class  UsersController < ApplicationController
   
   def new 
@@ -10,6 +11,10 @@ class  UsersController < ApplicationController
     @user = User.new(user_params)
     @invitation = Invitation.new(token:"") 
     
+    
+
+
+
     if @user.save
       if params[:invitation_token]  && params[:invitation_token] != ""
         #invitation = Invitation.where(token:params[:invitation_token]).first
@@ -18,6 +23,29 @@ class  UsersController < ApplicationController
         invitation.inviter.follow(@user)
         invitation.update_column(:token,nil)
       end 
+       
+
+       Stripe.api_key = ENV['STRIPE_API_KEY']
+
+      # Get the credit card details submitted by the form
+      token = params[:stripeToken]
+
+      # Create the charge on Stripe's servers - this will charge the user's card
+      begin
+        charge = Stripe::Charge.create(
+          :amount => 1000, # amount in cents, again
+          :currency => "cad",
+          :source => token,
+          :description => "Example charge"
+        )
+      rescue Stripe::CardError => e
+        flash[:error]= e.message
+        redirect_to home_path
+      end
+
+
+
+
       flash[:notice] = "Thank you for signing up "
       EmailWorker.perform_async(@user.id)
       #AppMailer.send_welcome_email(@user).deliver

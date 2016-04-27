@@ -12,6 +12,7 @@ require 'capybara/rails'
 require "rack_session_access/capybara"
 Capybara.javascript_driver = :webkit
 require 'capybara/email/rspec'
+require 'vcr'
 
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -28,6 +29,15 @@ require 'capybara/email/rspec'
 # require only the support files necessary.
 #
  Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
+
+
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/cassettes'
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+end
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -61,6 +71,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  #config.treat_symbols_as_metadata_keys_with_true_values = true
 end
 
 

@@ -1,4 +1,4 @@
-#####THIS IS A TEST OF THE GIT HUB CONTIBUTIONS SETTINGS
+
  
 class  UsersController < ApplicationController
   
@@ -10,19 +10,9 @@ class  UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @invitation = Invitation.new(token:"") 
-    
-    
-
-
-
-    if @user.save
-      if params[:invitation_token]  && params[:invitation_token] != ""
-        #invitation = Invitation.where(token:params[:invitation_token]).first
-        invitation = Invitation.find_by(token:params[:invitation_token])
-        @user.follow(invitation.inviter)
-        invitation.inviter.follow(@user)
-        invitation.update_column(:token,nil)
-      end 
+   
+   if @user.valid?
+      
        
 
        Stripe.api_key = ENV['STRIPE_API_KEY']
@@ -31,25 +21,49 @@ class  UsersController < ApplicationController
       token = params[:stripeToken]
 
       # Create the charge on Stripe's servers - this will charge the user's card
-      begin
-        charge = Stripe::Charge.create(
+      # begin
+      #   charge = StripeWrapper::Charge.create(
+      #     :amount => 1000, # amount in cents, again
+      #     :currency => "cad",
+      #     :source => token,
+      #     :description => "Example charge"
+      #   )
+      # rescue Stripe::CardError => e
+      #   flash[:error]= e.message
+      #   redirect_to home_path
+      # end
+
+
+        charge = StripeWrapper::Charge.create(
           :amount => 1000, # amount in cents, again
           :currency => "cad",
           :source => token,
           :description => "Example charge"
         )
-      rescue Stripe::CardError => e
-        flash[:error]= e.message
-        redirect_to home_path
-      end
+      if charge.successful?
+        flash[:notice] = "Thank you for signing up you payment went through"
+        
+        #AppMailer.send_welcome_email(@user).deliver
+        @user.save
+        EmailWorker.perform_async(@user.id)
+        if params[:invitation_token]  && params[:invitation_token] != ""
+        #invitation = Invitation.where(token:params[:invitation_token]).first
+        invitation = Invitation.find_by(token:params[:invitation_token])
+        @user.follow(invitation.inviter)
+        invitation.inviter.follow(@user)
+        invitation.update_column(:token,nil)
+        end 
 
 
 
 
-      flash[:notice] = "Thank you for signing up "
-      EmailWorker.perform_async(@user.id)
-      #AppMailer.send_welcome_email(@user).deliver
-      redirect_to signin_path
+        redirect_to signin_path
+      else 
+        
+        flash[:error]= charge.error_message
+        render :new
+      end 
+      
     else
       render :new
     end 

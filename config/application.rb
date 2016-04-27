@@ -19,3 +19,5 @@ module Myflix
    config.autoload_paths << "#{Rails.root}/lib" 
   end
 end
+
+

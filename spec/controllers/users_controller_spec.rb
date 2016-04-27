@@ -14,21 +14,32 @@ describe UsersController do
 
   describe "POST create" do 
       
-      context "when user input is valid" do   
+      context "when user input is valid" do 
+
+
           it "creates an instance if validations worked" do 
-            post :create, user: {email: "email@gmail.com", full_name:"martin", password:"password"} 
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user: {email: "email@gmail.com", full_name:"martin", password:"password"} 
             expect(User.count).to eq(1)
           end 
 
           it "redirect to the homepath" do 
-            post :create, user: {email: "martin@gmail.com", full_name:"martin", password: "password"}
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user: {email: "martin@gmail.com", full_name:"martin", password: "password"}
 
             expect(response).to redirect_to signin_path
           end 
           it "makes the user follow the inviter" do 
             alice = Fabricate(:user)
             invitation = Fabricate(:invitation, inviter:alice, recipient_email: "john@email.com")
-            post :create, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:invitation.token
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123,user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:invitation.token
             john = User.where(email:"john@email.com").first
             expect(john.follows?(alice)).to be true
           end 
@@ -36,21 +47,30 @@ describe UsersController do
           it "makes the inviter follow the user" do 
             alice = Fabricate(:user)
             invitation = Fabricate(:invitation, inviter:alice, recipient_email: "john@email.com")
-            post :create, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:invitation.token
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123 ,user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:invitation.token
             john = User.where(email:"john@email.com").first
             expect(alice.follows?(john)).to be true
           end 
           it "expires the invitation upon acceptance" do 
              alice = Fabricate(:user)
             invitation = Fabricate(:invitation, inviter:alice, recipient_email: "john@email.com")
-            post :create, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:invitation.token
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:invitation.token
             john = User.where(email:"john@email.com").first
             expect(Invitation.first.token).to be_nil
           end 
 
           it "sets the @invitation variable invitation instance" do 
             alice = Fabricate(:user)
-            post :create, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:''
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user:{email:"john@email.com", password:"123", full_name:"John Doe"}, invitation_token:''
             expect(assigns(:invitation)).to be_instance_of Invitation
           end 
       end 
@@ -76,17 +96,25 @@ describe UsersController do
           after {ActionMailer::Base.deliveries.clear}
           
           it "sends an email when a user signs up with valid inputs" do 
-            # user = Fabricate(:user, email:"dom@gmail.com")
-            post :create, user: {email:"dom@email.com", password:"123", full_name:"dom john"}
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user: {email:"dom@email.com", password:"123", full_name:"dom john"}
             expect(ActionMailer::Base.deliveries).not_to be_empty
           end 
           it "sends it to the user who signed up with valid inputs" do 
-            post :create, user: {email:"dom@email.com", password:"123", full_name:"dom john"}
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user: {email:"dom@email.com", password:"123", full_name:"dom john"}
             message = ActionMailer::Base.deliveries.last.to
             expect(message).to eq(["dom@email.com"])
           end 
           it "has the username content inside the email" do 
-            post :create, user: {email:"dom@email.com", password:"123", full_name:"dom john"}
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, token:123, user: {email:"dom@email.com", password:"123", full_name:"dom john"}
             message = ActionMailer::Base.deliveries.last
             expect(message.body).to include("dom john")
           end 
@@ -94,6 +122,49 @@ describe UsersController do
           it "doesnt send an email when user inputs are invalid" do 
             post :create, user:{email:"bob@email.com", full_name:"bob"}
             expect(ActionMailer::Base.deliveries).to be_empty
+          end 
+        end 
+
+        context "with a successful charge" do 
+          it "sets the flash notice" do 
+            #user = Fabricate(:user)
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, stripeToken:123, user:{email:"user123@email.com", password:"password", full_name:"Martin"}
+            
+            expect(flash[:notice]).to eq("Thank you for signing up you payment went through")
+          end 
+          it "redirects to signin_path" do 
+            charge = double('charge')
+            charge.stub(:successful?).and_return(true)
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, stripeToken:123, user:{email:"user123@email.com", password:"password", full_name:"Martin"}
+            
+            expect(response).to redirect_to signin_path
+
+          end 
+        end 
+
+
+        context "with an error charge" do 
+          it "sets the error message" do 
+            charge = double('charge')
+            charge.stub(:successful?).and_return(false)
+            charge.stub(:error_message).and_return("Sorry Something went wrong!!!")
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, stripeToken:123, user:{email:"user123@email.com", password:"password", full_name:"Martin"}
+            
+            expect(flash[:error]).to eq("Sorry Something went wrong!!!")
+          end 
+          it "renders new" do 
+            charge = double('charge')
+            charge.stub(:successful?).and_return(false)
+            charge.stub(:error_message).and_return("Sorry Something went wrong!!!")
+            StripeWrapper::Charge.stub(:create).and_return(charge)
+            post :create, stripeToken:123, user:{email:"user123@email.com", password:"password", full_name:"Martin"}
+            
+            expect(response).to render_template :new
           end 
         end 
 

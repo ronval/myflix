@@ -1,9 +1,9 @@
 require "rails_helper"
 
-feature "User invites friend", {vcr:true} do 
+feature "User invites friend", {js:true ,vcr:true} do 
      
   scenario "user successfully invites freind and invitation is accepted", :driver => :selenium do 
-    #VCR.use_cassette('feature_invitation_with_valid_card', :allow_unused_http_interactions => false) do    
+      
       alice = Fabricate(:user)
       sign_in(alice)
       expect(page).to have_content("You are Signed in")
@@ -41,7 +41,7 @@ feature "User invites friend", {vcr:true} do
       expect(page).to have_content "John Doe"
 
       clear_email
-    #end 
+     
   end 
 
 end

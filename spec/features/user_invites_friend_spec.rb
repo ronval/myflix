@@ -2,7 +2,7 @@ require "rails_helper"
 
 feature "User invites friend", {js:true ,vcr:true} do 
      
-  scenario "user successfully invites freind and invitation is accepted", :driver => :selenium do 
+  scenario "user successfully invites freind and invitation is accepted", :driver => :selenium do
       
       alice = Fabricate(:user)
       sign_in(alice)
@@ -14,7 +14,7 @@ feature "User invites friend", {js:true ,vcr:true} do
       fill_in "Friend's Email", with:"john@email.com"
       fill_in "Message", with:"This is an invitation to this app"
       click_button "Send Invitation"
-      save_and_open_page
+      
       sign_out
       open_email "john@email.com"
       current_email.click_link "Accept Invitation"
@@ -28,12 +28,14 @@ feature "User invites friend", {js:true ,vcr:true} do
         select "2017", from:"date_year"
         
       click_button "Sign Up"
-
+       expect(page).to have_content "Thank you for signing up you payment went through"
+       save_and_open_page
       fill_in "Email", with:"john@email.com"
       fill_in "Password", with:"123"
       click_button "login"
-
-      click_link "People"
+      
+      #people = page.find("ul[class='test']")
+      click_link "people"
       expect(page).to have_content alice.full_name
 
       sign_in(alice)

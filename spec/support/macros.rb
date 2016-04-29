@@ -17,5 +17,14 @@ end
 
 
 def sign_out
-  click_link "Sign out"
+  #sleep 5
+  
+  #find("a[href='/signout']").click
+  #find_link('sign-out').click
+  #visit signout_path
+  # within("//li[@id='account-info']") do
+       click_link "sign-out"
+  #   end
+
+  #page.driver.submit :delete, "/signout"
 end

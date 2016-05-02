@@ -32,6 +32,7 @@ group :development do
   gem 'rspec-rails', '~> 3.0'
   gem 'letter_opener'
   gem 'carrierwave-aws'
+
 end
 
 
@@ -48,6 +49,9 @@ group :test do
   gem 'rack_session_access'
   gem 'launchy'
   gem 'capybara-email'
+  gem 'vcr'
+  gem 'webmock'
+  gem 'selenium-webdriver'
 end
 
 group :production do
